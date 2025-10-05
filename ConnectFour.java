@@ -137,7 +137,7 @@ public final class ConnectFour {
   public static void displayGameGrid() {
     // Print the column numbers.
     for (int colNum = 0; colNum < NUM_COLUMNS; colNum++) {
-      System.out.print(" " + (colNum + 1) + " ");
+      System.out.print(" " + (colNum + 1));
     }
     // Newline after printing column numbers.
     System.out.println();
@@ -152,7 +152,7 @@ public final class ConnectFour {
         } else if (marker == AI_MARKER) {
           System.out.print(" " + AI_COLOR + marker + RESET_COLOR);
         } else {
-          System.out.print(" " + "#" + " ");
+          System.out.print(" " + "#");
         }
       }
       // Print a new line after every the end of every row,
