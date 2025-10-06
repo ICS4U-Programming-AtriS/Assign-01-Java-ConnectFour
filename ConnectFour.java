@@ -22,7 +22,7 @@ public final class ConnectFour {
    * Number of pieces in a row to win.
    */
   private static final int NUM_TO_WIN = 4;
-  
+
   /**
    * Private constructor to satisfy style checker.
    * @exception IllegalStateException for the utility class.
@@ -33,20 +33,20 @@ public final class ConnectFour {
     throw new IllegalStateException("Utility class.");
   }
 
-  /** 
+  /**
    * Marker for the user.
   */
   public static final char USER_MARKER = 'O';
-  
-  /** 
-   * Marker for the ai.
-  */
+
+  /**
+   * Marker for the AI.
+   */
   public static final char AI_MARKER = 'X';
 
-  /** 
-   * Variable to hold the gameGrid.
+  /**
+   * Variable to hold the game's grid.
    */
-  public static final String[] gameGrid = new String[NUM_COLUMNS];
+  public static final String[] GAME_GRID = new String[NUM_COLUMNS];
 
   /**
    * function that checks if a marker has won
@@ -61,7 +61,7 @@ public final class ConnectFour {
     // Go through each column.
     for (int colNum = 0; colNum < NUM_COLUMNS; colNum++) {
       // Check if the column contains a win.
-      if (gameGrid[colNum].contains(winString)) {
+      if (GAME_GRID[colNum].contains(winString)) {
         return true;
       }
     }
@@ -71,7 +71,7 @@ public final class ConnectFour {
       // Set variable to hold the row string.
       String row = "";
       for (int colNum = 0; colNum < NUM_COLUMNS; colNum++) {
-        row += gameGrid[colNum].charAt(rowNum);
+        row += GAME_GRID[colNum].charAt(rowNum);
       }
       // Check if the row contains a win.
       if (row.contains(winString)) {
@@ -88,7 +88,7 @@ public final class ConnectFour {
         String diagonal = "";
         // Create the diagonal string.
         for (int squareNum = 0; squareNum < NUM_TO_WIN; squareNum++) {
-          diagonal += gameGrid[colNum + squareNum].charAt(rowNum + squareNum);
+          diagonal += GAME_GRID[colNum + squareNum].charAt(rowNum + squareNum);
         }
         // Check if the diagonal contains a win.
         if (diagonal.equals(winString)) {
@@ -99,12 +99,14 @@ public final class ConnectFour {
     // Do the exact same thing for backslash [\] diagonals.
     // Starting point is the top left of the backslash [\] diagonal.
     for (int colNum = 0; colNum < NUM_COLUMNS - (NUM_TO_WIN - 1); colNum++) {
-      for (int rowNum = NUM_ROWS - 1; rowNum >= NUM_ROWS - (NUM_TO_WIN - 1); rowNum--) {
+      for (int rowNum = NUM_ROWS - 1;
+          rowNum >= NUM_ROWS - (NUM_TO_WIN - 1);
+        rowNum--) {
         // Set variable to hold the diagonal string.
         String diagonal = "";
         // Create the diagonal string.
         for (int squareNum = 0; squareNum < NUM_TO_WIN; squareNum++) {
-          diagonal += gameGrid[colNum + squareNum].charAt(rowNum - squareNum);
+          diagonal += GAME_GRID[colNum + squareNum].charAt(rowNum - squareNum);
         }
         // Check if the diagonal contains a win.
         if (diagonal.equals(winString)) {
@@ -117,14 +119,14 @@ public final class ConnectFour {
   }
 
   /**
-   * Color for the player's marker.
+   * Color for the player's marker [Blue].
    */
   public static final String USER_COLOR = "\u001B[34m";
 
   /**
-   * Color for the AI's marker.
+   * Color for the AI's marker [Green].
    */
-  public static final String AI_COLOR = "\u001B[31m";
+  public static final String AI_COLOR = "\u001B[32m";
 
   /**
    * Color for resetting the color.
@@ -135,6 +137,8 @@ public final class ConnectFour {
    * Function that displays the game grid.
    */
   public static void displayGameGrid() {
+    // Reset Color
+    System.out.print(RESET_COLOR);
     // Print the column numbers.
     for (int colNum = 0; colNum < NUM_COLUMNS; colNum++) {
       System.out.print(" " + (colNum + 1));
@@ -144,7 +148,7 @@ public final class ConnectFour {
     // Go through every row [starting from the top].
     for (int rowNum = NUM_ROWS - 1; rowNum >= 0; rowNum--) {
       for (int colNum = 0; colNum < NUM_COLUMNS; colNum++) {
-        char marker = gameGrid[colNum].charAt(rowNum);
+        char marker = GAME_GRID[colNum].charAt(rowNum);
         // Match the marker with the correct color.
         // If it's not a user or ai marker, it just prints a hashtag.
         if (marker == USER_MARKER) {
@@ -171,11 +175,11 @@ public final class ConnectFour {
     // Go through every column.
     for (int colNum = 0; colNum < NUM_COLUMNS; colNum++) {
       // If the column is not full, add it to the list.
-      if (gameGrid[colNum].charAt(NUM_ROWS - 1) == ' ') {
+      if (GAME_GRID[colNum].charAt(NUM_ROWS - 1) == ' ') {
         unfilledColumns.add(colNum);
       }
     }
-    // Return the list of unfilled column numbers. 
+    // Return the list of unfilled column numbers.
     return unfilledColumns;
   }
 
@@ -198,7 +202,7 @@ public final class ConnectFour {
   public static void main(final String[] args) {
     // Fill up the game grid with empty spaces.
     for (int colNum = 0; colNum < NUM_COLUMNS; colNum++) {
-      gameGrid[colNum] = " ".repeat(NUM_ROWS);
+      GAME_GRID[colNum] = " ".repeat(NUM_ROWS);
     }
     // LOOP
     while (turnNumber <= TOTAL_GRID_SPACES) {
@@ -206,10 +210,10 @@ public final class ConnectFour {
       displayGameGrid();
       // USER TURN
       if (turnNumber % 2 != 0) {
+        // Initialize Scanner for user input.
+        Scanner scanner = new Scanner(System.in);
         // Try catch
         try {
-          // Initialize Scanner for user input.
-          Scanner scanner = new Scanner(System.in);
           // Get user input for column number.
           System.out.printf("Enter a column number [1-%d]: ", NUM_COLUMNS);
           int chosenColumn = scanner.nextInt() - 1;
@@ -218,7 +222,7 @@ public final class ConnectFour {
             // If it isn't, give an error message [IN RED]
             System.out.println("\033[0;31mERROR: INPUT OUT OF BOUNDS.");
             continue;
-          } else if (gameGrid[chosenColumn].charAt(NUM_ROWS - 1) != ' ') {
+          } else if (GAME_GRID[chosenColumn].charAt(NUM_ROWS - 1) != ' ') {
             // If the column is full, give an error message [IN RED]
             System.out.println("\033[0;31mERROR: COLUMN IS FULL.");
             continue;
@@ -226,11 +230,12 @@ public final class ConnectFour {
             // If it is, place the user's marker in the chosen column.
             // Find the lowest empty space in the column.
             for (int rowNum = 0; rowNum < NUM_ROWS; rowNum++) {
-              if (gameGrid[chosenColumn].charAt(rowNum) == ' ') {
+              if (GAME_GRID[chosenColumn].charAt(rowNum) == ' ') {
                 // Place the user's marker in the empty space.
-                StringBuilder column = new StringBuilder(gameGrid[chosenColumn]);
+                StringBuilder column = new StringBuilder(
+                  GAME_GRID[chosenColumn]);
                 column.setCharAt(rowNum, USER_MARKER);
-                gameGrid[chosenColumn] = column.toString();
+                GAME_GRID[chosenColumn] = column.toString();
                 break;
               }
             }
@@ -242,6 +247,8 @@ public final class ConnectFour {
           System.out.println("\033[0;31mERROR: INPUT MUST BE NUMERIC.");
           continue;
         }
+        // Close the scanner.
+        scanner.close();
       } else {
         // AI TURN
         // Get a list of unfilled columns.
@@ -253,14 +260,17 @@ public final class ConnectFour {
         // Place the ai's marker in the chosen column.
         // Find the lowest empty space in the column.
         for (int rowNum = 0; rowNum < NUM_ROWS; rowNum++) {
-          if (gameGrid[chosenColumn].charAt(rowNum) == ' ') {
+          if (GAME_GRID[chosenColumn].charAt(rowNum) == ' ') {
             // Place the ai's marker in the empty space.
-            StringBuilder column = new StringBuilder(gameGrid[chosenColumn]);
+            StringBuilder column = new StringBuilder(GAME_GRID[chosenColumn]);
             column.setCharAt(rowNum, AI_MARKER);
-            gameGrid[chosenColumn] = column.toString();
+            GAME_GRID[chosenColumn] = column.toString();
             break;
           }
         }
+        // Print the ai's chosen column.
+        System.out.printf(AI_COLOR + "AI chose column %d.", chosenColumn + 1);
+        System.out.println();
         // Increment the turn number.
         turnNumber++;
       }
@@ -277,11 +287,14 @@ public final class ConnectFour {
     displayGameGrid();
     // Check if the user has won.
     if (checkForWin(USER_MARKER)) {
-      System.out.println("\033[0;34mYOU WIN! CONGRATULATIONS!");
+      // WINNING MESSAGE [IN YELLOW]
+      System.out.println("\033[0;33mYOU WIN! CONGRATULATIONS!");
     } else if (checkForWin(AI_MARKER)) {
+      // LOSING MESSAGE [IN RED]
       System.out.println("\033[0;31mAI WINS! BETTER LUCK NEXT TIME!");
     } else {
-      System.out.println("\033[0;33mIT'S A TIE! NO ONE WINS!");
+      // TIE MESSAGE [IN GREY]
+      System.out.println("\033[0;37mIT'S A TIE! NO ONE WINS!");
     }
   }
 }
