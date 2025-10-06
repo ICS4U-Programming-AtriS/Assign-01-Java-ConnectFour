@@ -243,8 +243,8 @@ public final class ConnectFour {
             turnNumber++;
           }
         } catch (Exception e) {
-          // Error message for non-numeric input. [IN RED]
-          System.out.println("\033[0;31mERROR: INPUT MUST BE NUMERIC.");
+          // Error message for non-integer input. [IN RED]
+          System.out.println("\033[0;31mERROR: INPUT MUST BE AN INTEGER.");
           continue;
         }
         // Close the scanner.
