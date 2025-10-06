@@ -204,19 +204,23 @@ public final class ConnectFour {
     for (int colNum = 0; colNum < NUM_COLUMNS; colNum++) {
       GAME_GRID[colNum] = " ".repeat(NUM_ROWS);
     }
+    // Initialize Scanner for user input.
+    Scanner scanner = new Scanner(System.in);
     // LOOP
     while (turnNumber <= TOTAL_GRID_SPACES) {
       // Display the game grid.
       displayGameGrid();
       // USER TURN
       if (turnNumber % 2 != 0) {
-        // Initialize Scanner for user input.
-        Scanner scanner = new Scanner(System.in);
+        // Prompt for user input for the column number.
+        System.out.printf("Enter a column number [1-%d]: ", NUM_COLUMNS);
         // Try catch
         try {
-          // Get user input for column number.
-          System.out.printf("Enter a column number [1-%d]: ", NUM_COLUMNS);
-          int chosenColumn = scanner.nextInt() - 1;
+          // Get user input for the column number as a string.
+          String chosenColumnAString = scanner.nextLine();
+          // Convert string input to an integer.
+          // 1 is subtracted to make it match with the actual array indexes.
+          int chosenColumn = Integer.parseInt(chosenColumnAString) - 1;
           // Check if the input is valid.
           if (chosenColumn < 0 || chosenColumn >= NUM_COLUMNS) {
             // If it isn't, give an error message [IN RED]
@@ -247,8 +251,6 @@ public final class ConnectFour {
           System.out.println("\033[0;31mERROR: INPUT MUST BE AN INTEGER.");
           continue;
         }
-        // Close the scanner.
-        scanner.close();
       } else {
         // AI TURN
         // Get a list of unfilled columns.
@@ -293,8 +295,10 @@ public final class ConnectFour {
       // LOSING MESSAGE [IN RED]
       System.out.println("\033[0;31mAI WINS! BETTER LUCK NEXT TIME!");
     } else {
-      // TIE MESSAGE [IN GREY]
-      System.out.println("\033[0;37mIT'S A TIE! NO ONE WINS!");
+      // TIE MESSAGE
+      System.out.println("IT'S A TIE! NO ONE WINS!");
     }
+    // Close the scanner.
+    scanner.close();
   }
 }
