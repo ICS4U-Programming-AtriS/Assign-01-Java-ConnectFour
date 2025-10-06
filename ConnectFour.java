@@ -49,7 +49,7 @@ public final class ConnectFour {
   public static final String[] GAME_GRID = new String[NUM_COLUMNS];
 
   /**
-   * function that checks if a marker has won
+   * Function that checks if a marker has won
    * Looks for any matches of a markers {NUM_TO_WIN} in a row.
    * Orthogonally or diagonally.
    * @param marker the marker to check for a win.
