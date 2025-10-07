@@ -50,12 +50,13 @@ public final class ConnectFour {
 
   /**
    * Function that checks if a marker has won
-   * Looks for any matches of a markers {NUM_TO_WIN} in a row.
+   * Looks for any matches of markers {NUM_TO_WIN} in a row.
    * Orthogonally or diagonally.
    * @param marker the marker to check for a win.
    * @return true if the marker has won, false otherwise.
    */
   public static boolean checkForWin(final char marker) {
+    // Arrangement that results in a win
     String winString = String.valueOf(marker).repeat(NUM_TO_WIN);
     // Check for vertical wins.
     // Go through each column.
@@ -70,6 +71,7 @@ public final class ConnectFour {
     for (int rowNum = 0; rowNum < NUM_ROWS; rowNum++) {
       // Set variable to hold the row string.
       String row = "";
+      // Create the row string by iterating through each column
       for (int colNum = 0; colNum < NUM_COLUMNS; colNum++) {
         row += GAME_GRID[colNum].charAt(rowNum);
       }
@@ -82,15 +84,15 @@ public final class ConnectFour {
     // Go through every square that can be considered a starting point.
     // No starting point can be in the last {NUM_TO_WIN - 1} columns or rows.
     // Starting point is the bottom left of the forward slash [/] diagonal.
-    for (int colNum = 0; colNum < NUM_COLUMNS - (NUM_TO_WIN - 1); colNum++) {
-      for (int rowNum = 0; rowNum < NUM_ROWS - (NUM_TO_WIN - 1); rowNum++) {
+    for (int colNum = 0; colNum <= NUM_COLUMNS - NUM_TO_WIN; colNum++) {
+      for (int rowNum = 0; rowNum <= NUM_ROWS - NUM_TO_WIN; rowNum++) {
         // Set variable to hold the diagonal string.
         String diagonal = "";
         // Create the diagonal string.
         for (int squareNum = 0; squareNum < NUM_TO_WIN; squareNum++) {
           diagonal += GAME_GRID[colNum + squareNum].charAt(rowNum + squareNum);
         }
-        // Check if the diagonal contains a win.
+        // Check if the diagonal is a win.
         if (diagonal.equals(winString)) {
           return true;
         }
@@ -98,9 +100,9 @@ public final class ConnectFour {
     }
     // Do the exact same thing for backslash [\] diagonals.
     // Starting point is the top left of the backslash [\] diagonal.
-    for (int colNum = 0; colNum < NUM_COLUMNS - (NUM_TO_WIN - 1); colNum++) {
+    for (int colNum = 0; colNum <= NUM_COLUMNS - NUM_TO_WIN; colNum++) {
       for (int rowNum = NUM_ROWS - 1;
-          rowNum >= NUM_ROWS - (NUM_TO_WIN - 1);
+          rowNum > NUM_ROWS - NUM_TO_WIN;
         rowNum--) {
         // Set variable to hold the diagonal string.
         String diagonal = "";
@@ -108,7 +110,7 @@ public final class ConnectFour {
         for (int squareNum = 0; squareNum < NUM_TO_WIN; squareNum++) {
           diagonal += GAME_GRID[colNum + squareNum].charAt(rowNum - squareNum);
         }
-        // Check if the diagonal contains a win.
+        // Check if the diagonal is a win.
         if (diagonal.equals(winString)) {
           return true;
         }
@@ -217,10 +219,10 @@ public final class ConnectFour {
         // Try catch
         try {
           // Get user input for the column number as a string.
-          String chosenColumnAString = scanner.nextLine();
+          String chosenColumnAsString = scanner.nextLine();
           // Convert string input to an integer.
           // 1 is subtracted to make it match with the actual array indexes.
-          int chosenColumn = Integer.parseInt(chosenColumnAString) - 1;
+          int chosenColumn = Integer.parseInt(chosenColumnAsString) - 1;
           // Check if the input is valid.
           if (chosenColumn < 0 || chosenColumn >= NUM_COLUMNS) {
             // If it isn't, give an error message [IN RED]
