@@ -248,7 +248,7 @@ public final class ConnectFour {
             // Increment the turn number.
             turnNumber++;
           }
-        } catch (Exception e) {
+        } catch (Exception error) {
           // Error message for non-integer input. [IN RED]
           System.out.println("\033[0;31mERROR: INPUT MUST BE AN INTEGER.");
           continue;
